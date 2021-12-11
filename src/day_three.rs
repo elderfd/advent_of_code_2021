@@ -136,3 +136,13 @@ pub fn solve() -> (i32, i32) {
 
     return (power_consumption, life_support_rating);
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn correct_answer() {
+        assert_eq!(solve(), (4006064, 5941884))
+    }
+}

@@ -1,24 +1,9 @@
-use std::fs::File;
-use std::io::{self, BufRead};
 use std::str::FromStr;
 
+use super::read_input::read_input;
+
 pub fn solve() -> (i32, i32) {
-    let in_file_name = "inputs/day_one.txt";
-
-    let file = File::open(in_file_name);
-
-    if file.is_err() {
-        panic!("Could not open {}", in_file_name);
-    }
-
-    let mut challenge_input: Vec<String> = Vec::new();
-
-    for line in io::BufReader::new(file.unwrap()).lines() {
-        match line {
-            Ok(v) => challenge_input.push(v),
-            Err(_) => panic!("Failed to read line"),
-        }
-    }
+    let challenge_input = read_input(&"inputs/day_one.txt".to_string());
 
     let input_numbers: Vec<i32> = challenge_input
         .iter()

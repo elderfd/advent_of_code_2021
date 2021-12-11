@@ -94,7 +94,7 @@ fn parse_instruction(input: &String) -> CourseInstruction {
     };
 }
 
-fn day_two() -> i32 {
+fn day_two() -> (i32, i32) {
     let in_file_name = "inputs/ex2.txt";
 
     let file = File::open(in_file_name);
@@ -115,7 +115,7 @@ fn day_two() -> i32 {
     let as_instructions: Vec<CourseInstruction> =
         challenge_input.iter().map(parse_instruction).collect();
 
-    let final_position =
+    let simple_interpretation =
         as_instructions
             .iter()
             .fold((0, 0), |(x, y), instruction| match instruction.direction {
@@ -124,7 +124,25 @@ fn day_two() -> i32 {
                 Direction::Up => (x, y - instruction.distance),
             });
 
-    return final_position.0 * final_position.1;
+    let complex_interpretation = as_instructions
+        .iter()
+        .fold(
+            ((0, 0), 0),
+            |((x, y), aim), instruction| match instruction.direction {
+                Direction::Forward => (
+                    (x + instruction.distance, y + aim * instruction.distance),
+                    aim,
+                ),
+                Direction::Down => ((x, y), aim + instruction.distance),
+                Direction::Up => ((x, y), aim - instruction.distance),
+            },
+        )
+        .0;
+
+    return (
+        simple_interpretation.0 * simple_interpretation.1,
+        complex_interpretation.0 * complex_interpretation.1,
+    );
 }
 
 fn main() {
